@@ -1,0 +1,48 @@
+{
+  "name": "electron-react-example",
+  "version": "0.1.0",
+  "author": "Matt Raible <matt.raible@okta.com>",
+  "homepage": "./",
+  "private": true,
+  "main": "public/electron.js",
+  "build": {
+    "appId": "com.okta.developer.electron-cra",
+    "files": [
+      "build/**/*",
+      "node_modules/**/*"
+    ],
+    "directories": {
+      "buildResources": "assets"
+    }
+  },
+  "dependencies": {
+    "@okta/okta-react": "^1.0.2",
+    "@okta/okta-signin-widget": "^2.9.0",
+    "apollo-boost": "^0.1.7",
+    "apollo-link-context": "^1.0.8",
+    "apollo-link-http": "^1.5.4",
+    "electron-is-dev": "^0.3.0",
+    "graphql": "^0.13.2",
+    "graphql-tag": "^2.9.2",
+    "react": "^16.4.0",
+    "react-apollo": "^2.1.4",
+    "react-dom": "^16.4.0",
+    "react-router-dom": "^4.2.2",
+    "react-scripts": "1.1.4"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject",
+    "electron-dev": "concurrently \"BROWSER=none yarn start\" \"wait-on http://localhost:3000 && electron .\"",
+    "electron-pack": "build --c.extraMetadata.main=build/electron.js",
+    "preelectron-pack": "yarn build"
+  },
+  "devDependencies": {
+    "concurrently": "^3.5.1",
+    "electron": "^2.0.2",
+    "electron-builder": "^20.15.1",
+    "wait-on": "^2.1.0"
+  }
+}
