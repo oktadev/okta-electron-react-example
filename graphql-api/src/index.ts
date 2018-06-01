@@ -30,7 +30,7 @@ bootstrap({
     Time: GraphQLTime,
     DateTime: GraphQLDateTime,
   },
-  setupContainer: async (container, action) => {
+  /*setupContainer: async (container, action) => {
     const request = action.request; // user request, you can get http headers from it
     // require every request to have an authorization header
     if (!request.headers.authorization) {
@@ -46,7 +46,7 @@ bootstrap({
       .catch(error => {
         throw Error('JWT Validation failed!');
       })
-  },
+  },*/
   cors: true
 }).then(() => {
   console.log('Your app is up and running on http://localhost:4000. ' +

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { withAuth } from '@okta/okta-react';
 import { ApolloClient } from 'apollo-client';
 import { Link } from 'react-router-dom';
@@ -20,6 +20,7 @@ export default withAuth(class PointsForm extends React.Component {
 
   async componentDidMount() {
     const id = this.props.match.params.id;
+    console.log('id', id);
     if (id !== 'new') {
       const authLink = setContext(async (_, {headers}) => {
         const token = await this.props.auth.getAccessToken();
@@ -33,25 +34,25 @@ export default withAuth(class PointsForm extends React.Component {
 
       const client = new ApolloClient({
         link: authLink.concat(httpLink),
-        cache: new InMemoryCache()
+        cache: new InMemoryCache(),
+        connectToDevTools: true
       });
 
-      client.query({
-        query: gql`{
-            query GetPoints(id: Int) {
-                pointsGet(id: $id) {
-                    date,
-                    alcohol,
-                    exercise,
-                    diet,
-                    notes
-                }
+      const getPoints = gql`
+        query GetPoints($id: Int) {
+            pointsGet(id: $id) {
+                date,
+                alcohol,
+                exercise,
+                diet,
+                notes
             }
-        }
-        `,
+        }`;
+
+      client.query({
+        query: getPoints,
         variables: {id: id}
-      })
-      .then(result => {
+      }).then(result => {
         console.log(result);
         this.setState({points: result.data.points});
       });
@@ -75,28 +76,5 @@ export default withAuth(class PointsForm extends React.Component {
 
   render() {
     return (<h1>Hello {this.props.match.params.id} <Link to='/points'>Cancel</Link></h1>);
-      {/*<form onSubmit={this.handleSubmit}>
-        <label>
-          Date
-          <input type="date" value={this.state.points.date} onChange={this.handleChange}/>
-        </label>
-        <label>
-          <input type="checkbox" value={this.state.points.exercise} onChange={this.handleChange}/>
-          Did you exercise?
-        </label>
-        <label>
-          <input type="checkbox" value={this.state.points.diet} onChange={this.handleChange}/>
-          Did you eat well?
-        </label>
-        <label>
-          <input type="checkbox" value={this.state.points.alcohol} onChange={this.handleChange}/>
-          Did you drink responsibly?
-        </label>
-        <label>
-          Notes
-          <textarea value={this.state.points.notes} onChange={this.handleChange}/>
-        </label>
-        <input type="submit" value="Submit"/>
-      </form>*/}
   }
 })
