@@ -1,9 +1,8 @@
 import { bootstrap } from 'vesper';
 import { PointsController } from './controller/PointsController';
 import { Points } from './entity/Points';
-import { createConnection, getManager } from 'typeorm';
 import { User } from './entity/User';
-import { GraphQLDate, GraphQLTime, GraphQLDateTime } from 'graphql-iso-date';
+import { GraphQLDate, GraphQLDateTime, GraphQLTime } from 'graphql-iso-date';
 import * as OktaJwtVerifier from '@okta/jwt-verifier';
 import { CurrentUser } from './CurrentUser';
 
@@ -30,28 +29,28 @@ bootstrap({
     Time: GraphQLTime,
     DateTime: GraphQLDateTime,
   },
-  /*setupContainer: async (container, action) => {
-    const request = action.request; // user request, you can get http headers from it
+  setupContainer: async (container, action) => {
+    const request = action.request;
     // require every request to have an authorization header
     if (!request.headers.authorization) {
-      throw Error('Authorization header is required');
+      throw Error('Authorization header is required!');
     }
     let parts = request.headers.authorization.trim().split(' ');
     let accessToken = parts.pop();
     await oktaJwtVerifier.verifyAccessToken(accessToken)
       .then(async jwt => {
-        const currentUser = new CurrentUser(jwt.claims.uid, jwt.claims.sub);
+        const user = JSON.parse(request.headers['x-forwarded-user'].toString());
+        const currentUser = new CurrentUser(jwt.claims.uid, user.given_name, user.family_name);
         container.set(CurrentUser, currentUser);
       })
       .catch(error => {
         throw Error('JWT Validation failed!');
       })
-  },*/
+  },
   cors: true
 }).then(() => {
   console.log('Your app is up and running on http://localhost:4000. ' +
     'You can use playground in development mode on http://localhost:4000/playground');
-
 }).catch(error => {
   console.error(error.stack ? error.stack : error);
 });

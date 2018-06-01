@@ -13,10 +13,10 @@ export class PointsController {
   // serves "points: [Points]" requests
   @Query()
   async points() {
-    /*return this.entityManager.getRepository(Points).createQueryBuilder("points")
+    return this.entityManager.getRepository(Points).createQueryBuilder("points")
       .innerJoin("points.user", "user", "user.id = :id", { id: this.currentUser.id })
-      .getMany();*/
-    return this.entityManager.find(Points);
+      .getMany();
+    //return this.entityManager.find(Points);
   }
 
   // serves "pointsGet(id: Int): Points" requests
@@ -29,11 +29,13 @@ export class PointsController {
   @Mutation()
   pointsSave(args) {
     // add current user to points saved
-    /*if (this.currentUser) {
+    if (this.currentUser) {
       const user = new User();
       user.id = this.currentUser.id;
+      user.firstName = this.currentUser.firstName;
+      user.lastName = this.currentUser.lastName;
       args.user = user;
-    }*/
+    }
 
     const points = this.entityManager.create(Points, args);
     return this.entityManager.save(Points, points);
@@ -45,5 +47,4 @@ export class PointsController {
     await this.entityManager.remove(Points, {id: id});
     return true;
   }
-
 }

@@ -38,12 +38,14 @@ export default withAuth(class PointsModal extends Component {
 
     const authLink = setContext(async (_, {headers}) => {
       const token = await this.props.auth.getAccessToken();
+      const user = await this.props.auth.getUser();
 
       // return the headers to the context so httpLink can read them
       return {
         headers: {
           ...headers,
-          authorization: token ? `Bearer ${token}` : ''
+          authorization: token ? `Bearer ${token}` : '',
+          'x-forwarded-user': JSON.stringify(user)
         }
       }
     });
@@ -63,7 +65,7 @@ export default withAuth(class PointsModal extends Component {
 
   render() {
     const {item} = this.state;
-    const opener = item.id ? <Link onClick={this.toggle} to="#">{item.date}</Link> :
+    const opener = item.id ? <Link onClick={this.toggle} to="#">{this.props.item.date}</Link> :
       <Button color="primary" onClick={this.toggle}>Add Points</Button>;
 
     return (
@@ -75,7 +77,7 @@ export default withAuth(class PointsModal extends Component {
             <Form onSubmit={this.handleSubmit}>
               <FormGroup>
                 <Label for="date">Date</Label>
-                <Input type="date" name="item.date" id="date" value={item.date}
+                <Input type="date" name="date" id="date" value={item.date}
                        onChange={this.handleChange}/>
               </FormGroup>
               <FormGroup check>
