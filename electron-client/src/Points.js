@@ -103,6 +103,15 @@ export default withAuth(class Points extends Component {
 
   render() {
     const {points, error} = this.state;
+    const pointsList = points.map(p => {
+      const total = p.exercise + p.diet + p.alcohol;
+      return <tr key={p.id}>
+        <td style={{whiteSpace: 'nowrap'}}><PointsModal item={p} callback={this.refresh}/></td>
+        <td className={total <= 1 ? 'text-danger' : 'text-success'}>{total}</td>
+        <td>{p.notes}</td>
+        <td><Button size="sm" color="danger" onClick={() => this.remove(p)}>Delete</Button></td>
+      </tr>
+    });
 
     return (
       <div>
@@ -120,17 +129,7 @@ export default withAuth(class Points extends Component {
             </tr>
             </thead>
             <tbody>
-            {points.map(p =>
-              <tr key={p.id}>
-                <td style={{whiteSpace: 'nowrap'}}>
-                  <PointsModal item={p} callback={this.refresh}/>
-                  <Button href={`${this.props.match.url}/${p.id}`}>{p.date}</Button>
-                </td>
-                <td>{p.exercise + p.diet + p.alcohol}</td>
-                <td>{p.notes}</td>
-                <td><Button size="sm" color="danger" onClick={() => this.remove(p)}>Delete</Button></td>
-              </tr>
-            )}
+            {pointsList}
             </tbody>
           </Table>
           <PointsModal callback={this.refresh}/>

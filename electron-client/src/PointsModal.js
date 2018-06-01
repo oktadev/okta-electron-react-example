@@ -6,6 +6,7 @@ import { ApolloClient } from 'apollo-client';
 import { setContext } from 'apollo-link-context';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import gql from 'graphql-tag';
+import { Link } from 'react-router-dom';
 
 export default withAuth(class PointsModal extends Component {
   client;
@@ -54,12 +55,15 @@ export default withAuth(class PointsModal extends Component {
   }
 
   toggle() {
+    if (this.state.modal && !this.state.item.id) {
+      this.setState({item: this.emptyItem});
+    }
     this.setState({modal: !this.state.modal});
   }
 
   render() {
     const {item} = this.state;
-    const opener = item.id ? <a onClick={this.toggle} href="#">{item.date}</a> :
+    const opener = item.id ? <Link onClick={this.toggle} to="#">{item.date}</Link> :
       <Button color="primary" onClick={this.toggle}>Add Points</Button>;
 
     return (

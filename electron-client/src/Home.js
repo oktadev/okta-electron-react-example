@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { withAuth } from '@okta/okta-react';
 import { Button, Container } from 'reactstrap';
 import AppNavbar from './AppNavbar';
+import { Link } from 'react-router-dom';
 
 export default withAuth(class Home extends Component {
   constructor(props) {
@@ -46,7 +47,7 @@ export default withAuth(class Home extends Component {
     if (this.state.authenticated === null) return null;
     const button = this.state.authenticated ?
         <div>
-          <Button color="link" href="/points">Manage Points</Button><br/>
+          <Button color="link"><Link to="/points">Manage Points</Link></Button><br/>
           <Button color="link" onClick={this.logout}>Logout</Button>
         </div>:
       <Button color="primary" onClick={this.login}>Login</Button>;
