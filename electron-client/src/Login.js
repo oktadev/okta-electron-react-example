@@ -2,8 +2,12 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import OktaSignInWidget from './OktaSignInWidget';
 import { withAuth } from '@okta/okta-react';
+import AuthService from './AuthService';
+const { BrowserWindow } = window.require('electron').remote;
 
 export default withAuth(class Login extends Component {
+  authService;
+
   constructor(props) {
     super(props);
     this.onSuccess = this.onSuccess.bind(this);
@@ -12,6 +16,7 @@ export default withAuth(class Login extends Component {
       authenticated: null
     };
     this.checkAuthentication();
+    this.authService = new AuthService();
   }
 
   async checkAuthentication() {
@@ -21,14 +26,26 @@ export default withAuth(class Login extends Component {
     }
   }
 
+  componentDidMount() {
+    this.signIn();
+  }
+
+  signIn() {
+    console.log('signing in ...');
+    if (!this.authService.loggedIn()) {
+      return this.authService.fetchServiceConfiguration().then(
+        () => this.authService.makeAuthorizationRequest());
+    } else {
+      return Promise.resolve();
+    }
+  }
+
   componentDidUpdate() {
     this.checkAuthentication();
   }
 
   onSuccess(res) {
-    return this.props.auth.redirect({
-      sessionToken: res.session.token
-    });
+
   }
 
   onError(err) {
@@ -39,9 +56,6 @@ export default withAuth(class Login extends Component {
     if (this.state.authenticated === null) return null;
     return this.state.authenticated ?
       <Redirect to={{pathname: '/'}}/> :
-      <OktaSignInWidget
-        baseUrl={this.props.baseUrl}
-        onSuccess={this.onSuccess}
-        onError={this.onError}/>;
+      <p>Redirecting to login...</p>;
   }
 });

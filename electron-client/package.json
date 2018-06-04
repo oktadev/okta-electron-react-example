@@ -1,17 +1,22 @@
 {
   "name": "electron-react-example",
   "version": "0.1.0",
-  "author": "Matt Raible <matt.raible@okta.com>",
+  "author": {
+    "name:": "Matt Raible",
+    "email": "matt.raible@okta.com"
+  },
   "description": "21-Points",
   "homepage": "./",
   "private": true,
   "main": "public/electron.js",
   "build": {
-    "appId": "com.okta.developer.electron-cra"
+    "appId": "com.electron.electron-cra",
+    "productName": "21-Points"
   },
   "dependencies": {
     "@okta/okta-react": "^1.0.2",
     "@okta/okta-signin-widget": "^2.9.0",
+    "@openid/appauth": "^0.3.4",
     "apollo-boost": "^0.1.7",
     "apollo-link-context": "^1.0.8",
     "apollo-link-http": "^1.5.4",
@@ -24,7 +29,8 @@
     "react-dom": "^16.4.0",
     "react-router-dom": "^4.2.2",
     "react-scripts": "1.1.4",
-    "reactstrap": "^6.0.1"
+    "reactstrap": "^6.0.1",
+    "request-promise": "^4.2.2"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -32,8 +38,8 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "dev": "concurrently \"BROWSER=none yarn start\" \"wait-on http://localhost:3000 && electron .\"",
-    "pack": "electron-builder --dir",
     "dist": "electron-builder",
+    "predist": "yarn build",
     "postinstall": "electron-builder install-app-deps"
   },
   "devDependencies": {
