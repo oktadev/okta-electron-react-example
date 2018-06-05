@@ -3,12 +3,7 @@
   "version": "0.1.0",
   "author": "Matt Raible <matt.raible@okta.com>",
   "description": "21-Points",
-  "homepage": "./",
   "private": true,
-  "main": "public/electron.js",
-  "build": {
-    "appId": "com.okta.developer.electron-cra"
-  },
   "dependencies": {
     "@okta/okta-react": "^1.0.2",
     "@okta/okta-signin-widget": "^2.9.0",
@@ -16,7 +11,6 @@
     "apollo-link-context": "^1.0.8",
     "apollo-link-http": "^1.5.4",
     "bootstrap": "^4.1.1",
-    "electron-is-dev": "^0.3.0",
     "graphql": "^0.13.2",
     "graphql-tag": "^2.9.2",
     "react": "^16.4.0",
@@ -30,16 +24,6 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject",
-    "dev": "concurrently \"BROWSER=none yarn start\" \"wait-on http://localhost:3000 && electron .\"",
-    "pack": "electron-builder --dir",
-    "dist": "electron-builder",
-    "postinstall": "electron-builder install-app-deps"
-  },
-  "devDependencies": {
-    "concurrently": "^3.5.1",
-    "electron": "^2.0.2",
-    "electron-builder": "^20.15.1",
-    "wait-on": "^2.1.0"
+    "eject": "react-scripts eject"
   }
 }
